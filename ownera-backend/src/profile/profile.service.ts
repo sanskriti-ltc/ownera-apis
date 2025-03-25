@@ -9,11 +9,21 @@ dotenvConfig();
 @Injectable()
 export class ProfileService {
     private sdk: Sdk;
-    private readonly API_ENDPOINT = process.env.API_ENDPOINT;
-    private readonly ORGANIZATION_ID = process.env.ORGANIZATION_ID;
+    private readonly API_ENDPOINT = (() => {
+        if (!process.env.API_ENDPOINT) {
+          throw new Error('API_ENDPOINT environment variable is not set.');
+        }
+        return process.env.API_ENDPOINT;
+    })();
+    private readonly ORGANIZATION_ID = (() => {
+        if (!process.env.ORGANIZATION_ID) {
+          throw new Error('ORGANIZATION_ID environment variable is not set.');
+        }
+        return process.env.ORGANIZATION_ID;
+    })();
 
     constructor() {
-        this.sdk = new Sdk({ orgId: this.ORGANIZATION_ID, owneraAPIAddress: this.API_ENDPOINT });
+        this.sdk = new Sdk({ orgId: "ORG ID" , custodianOrgId: this.ORGANIZATION_ID, owneraAPIAddress: this.API_ENDPOINT });
     }
 
     createCrypto() {
